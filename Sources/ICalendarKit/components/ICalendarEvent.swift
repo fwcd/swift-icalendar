@@ -134,7 +134,37 @@ public struct ICalendarEvent: VComponent {
     ///
     /// See https://tools.ietf.org/html/rfc5545#section-3.8.5.3
     public var rrule: ICalendarRecurrenceRule?
+    
+    /// Specifies whether an appointment is intended to be
+    /// treated as all-day
+    ///
+    /// See https://docs.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxcical/0f262da6-c5fd-459e-9f18-145eba86b5d2
+    public var xMicrosoftCDOAllDayEvent: Bool?
 
+    /// Specifies the BUSY status of an appointment.
+    ///
+    /// See https://docs.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxcical/cd68eae7-ed65-4dd3-8ea7-ad585c76c736
+    public var xMicrosoftCDOBusyStatus: ICalendarMicrosoftStatus?
+    
+    /// Specifies the busy status that the meeting
+    /// organizer intends the attendee's copy of
+    /// the meeting to have.
+    ///
+    /// - Note: This property SHOULD<217> be imported
+    /// into PidLidIntendedBusyStatus ([MS-OXPROPS] section 2.151)
+    /// using the same import mapping as X-MICROSOFT-CDO-BUSYSTATUS
+    /// as specified in section 2.1.3.1.1.20.31.
+    ///
+    /// See https://docs.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxcical/df1c7988-9908-4ee6-95b0-fcd180b02b44
+    public var xMicrosoftCDOIntendedStatus: ICalendarMicrosoftStatus?
+    
+    
+    /// Specifies the importance of an appointment.
+    ///
+    /// See https://docs.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxcical/38b4e7a9-8dec-488a-a901-85cfe71171d8
+    public var xMicrosoftCDOImportance: ICalendarMicrosoftImportance?
+    
+    
     // TODO: Define properties that can be specified multiple times:
     // public var attachments
     // public var attendees
@@ -173,6 +203,10 @@ public struct ICalendarEvent: VComponent {
             .line("ORGANIZER", organizer),
             .line("PRIORITY", priority),
             .line("SEQ", seq),
+            .line("X-MICROSOFT-CDO-ALLDAYEVENT", xMicrosoftCDOAllDayEvent),
+            .line("X-MICROSOFT-CDO-BUSYSTATUS", xMicrosoftCDOBusyStatus),
+            .line("X-MICROSOFT-CDO-INTENDEDSTATUS", xMicrosoftCDOIntendedStatus),
+            .line("X-MICROSOFT-CDO-IMPORTANCE", xMicrosoftCDOImportance),
             .line("STATUS", status),
             .line("SUMMARY", summary),
             .line("TRANSP", transp),
@@ -206,7 +240,11 @@ public struct ICalendarEvent: VComponent {
         recurrenceId: Date? = nil,
         rrule: ICalendarRecurrenceRule? = nil,
         alarms: [ICalendarAlarm] = [],
-        timeZone: ICalendarTimeZone? = nil
+        timeZone: ICalendarTimeZone? = nil,
+        xMicrosoftCDOAllDayEvent: Bool? = nil,
+        xMicrosoftCDOBusyStatus: ICalendarMicrosoftStatus? = nil,
+        xMicrosoftCDOIntendedStatus: ICalendarMicrosoftStatus? = nil,
+        xMicrosoftCDOImportance: ICalendarMicrosoftImportance? = nil
     ) {
         self.dtstamp = dtstamp
         self.uid = uid
@@ -230,6 +268,10 @@ public struct ICalendarEvent: VComponent {
         self.duration = duration
         self.alarms = alarms
         self.timeZone = timeZone
+        self.xMicrosoftCDOAllDayEvent = xMicrosoftCDOAllDayEvent
+        self.xMicrosoftCDOBusyStatus = xMicrosoftCDOBusyStatus
+        self.xMicrosoftCDOIntendedStatus = xMicrosoftCDOIntendedStatus
+        self.xMicrosoftCDOImportance = xMicrosoftCDOImportance
 
         assert(dtend == nil || duration == nil, "End date/time and duration must not be specified together!")
     }

@@ -4,7 +4,8 @@ import Foundation
 
 final class ICalendarTests: XCTestCase {
     static var allTests = [
-        ("testICalendarWithEvent", testICalendarWithEvent)
+        ("testICalendarWithEvent", testICalendarWithEvent),
+        ("testICalendarWithEventAndTimeZone", testICalendarWithEventAndTimeZone)
     ]
 
     /// A few dates for testing 
@@ -83,7 +84,35 @@ final class ICalendarTests: XCTestCase {
             dtstart: .dateTime(dates[2].date),
             lastModified: dates[3].date,
             dtend: .dateOnly(dates[4].date),
-            timeZone: ICalendarTimeZone(tzid: "America/Mexico_City", daylight: DaylightComponent(tzOffsetFrom: "-0600", rrule: .init(frequency: .yearly, byDay: [.first(.saturday)], byDayOfMonth: [4]), dstart: dstart, tzName: "CDT", tzOffsetTo: "-0500"), standard: StandardComponent(tzOffsetFrom: "-0500", rrule: .init(frequency: .yearly, byDay: [.first(.saturday)], byDayOfMonth: [4]), dstart: dstart, tzName: "CDT", tzOffsetTo: "-0600"))
+            timeZone: ICalendarTimeZone(
+                tzid: "America/Mexico_City",
+                daylight: DaylightComponent(
+                    tzOffsetFrom: "-0600",
+                    rrule: .init(
+                        frequency: .yearly,
+                        byDay: [
+                            .first(.saturday)
+                        ],
+                        byDayOfMonth: [4]
+                    ),
+                    dstart: dstart,
+                    tzName: "CDT",
+                    tzOffsetTo: "-0500"
+                ),
+                standard: StandardComponent(
+                    tzOffsetFrom: "-0500",
+                    rrule: .init(
+                        frequency: .yearly,
+                        byDay: [
+                            .first(.saturday)
+                        ],
+                        byDayOfMonth: [4]
+                    ),
+                    dstart: dstart,
+                    tzName: "CDT",
+                    tzOffsetTo: "-0600"
+                )
+            )
         ))
         
         let generatedCalendar: String = cal.vEncoded
@@ -120,7 +149,6 @@ final class ICalendarTests: XCTestCase {
             "END:VEVENT",
             "END:VCALENDAR"
         ].map { "\($0)\r\n" }.joined()
-        print()
 
         XCTAssertEqual(generatedCalendar, manualCalendar)
     }
